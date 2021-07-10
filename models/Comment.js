@@ -8,4 +8,4 @@ const Comment = new Schema({
   }
 })
 
-model.exports = model('Comment', Comment)
+module.exports = model('Comment', Comment)
