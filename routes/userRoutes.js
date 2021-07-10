@@ -18,6 +18,10 @@ router.post('/users/login', (req, res) => {
   })
 })
 
+router.get('/users/me', passport.authenticate('jwt'), (req, res) => {
+  res.json(req.user)
+})
+
 router.get('/users/:username', passport.authenticate('jwt'), (req, res) => {
   User.findOne({ username: req.params.username })
     .populate('posts')
