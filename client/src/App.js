@@ -3,26 +3,70 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
+  useHistory
 } from 'react-router-dom'
 import Login from './pages/Login'
 import Navbar from './components/Navbar'
 import User from './utils/UserAPI'
 
 const App = () => {
+  // const history = useHistory()
   const [meState, setMeState] = useState({
     me: {},
-    isLoggedIn: false
+    isLoggedIn: true
   })
 
-  useEffect(() => {
+  const getMe = () => {
     User.me()
-      .then(({ data: me }) => setMeState({ me, isLoggedIn: true }))
+      .then(({ data: me }) => {
+        if (me) {
+          setMeState({ me, isLoggedIn: true })
+        } else {
+          getMe()
+        }
+      })
       .catch(err => {
         console.error(err)
         setMeState({ ...meState, isLoggedIn: false })
       })
+  }
+
+  useEffect(() => {
+    getMe()
   }, [])
+
+  const updateMe = () => {
+    User.me()
+      .then(({ data: me }) => {
+        console.log(me)
+        setMeState({ me, isLoggedIn: true })
+        // history.push('/')
+      })
+      .catch(err => {
+        console.error(err)
+        setMeState({ ...meState, isLoggedIn: false })
+      })
+  }
+
+  const PrivateRoute = ({ children, ...rest }) => {
+    return (
+      <Route
+        {...rest}
+        render={({ location }) => meState.isLoggedIn
+          ? (
+              children
+            )
+          : (
+            <Redirect to={{
+              pathname: '/login',
+              state: { from: location }
+            }}
+            />
+            )}
+      />
+    )
+  }
 
   return (
     <Router>
@@ -32,14 +76,14 @@ const App = () => {
           isLoggedIn={meState.isLoggedIn}
         />
         <Switch>
-          <Route exact path='/'>
-            {meState.isLoggedIn ? <h1>This is the home page</h1> : <Redirect to='/login' />}
-          </Route>
-          <Route path='/profile/:username'>
-            {meState.isLoggedIn ? <h1>This is the profile page</h1> : <Redirect to='/login' />}
-          </Route>
+          <PrivateRoute exact path='/'>
+            <h1>The Home Page</h1>
+          </PrivateRoute>
+          <PrivateRoute path='/profile/:username'>
+            <h1>The Profile Page</h1>
+          </PrivateRoute>
           <Route path='/login'>
-            <Login />
+            <Login updateMe={updateMe} />
           </Route>
         </Switch>
       </div>

@@ -5,6 +5,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput'
 import InputLabel from '@material-ui/core/InputLabel'
 import Button from '@material-ui/core/Button'
 import User from '../../utils/UserAPI'
+import { useLocation, useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,8 +15,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const LoginForm = () => {
-
+const LoginForm = props => {
+  const history = useHistory()
+  const location = useLocation()
   const [loginState, setLoginState] = useState({
     username: '',
     password: ''
@@ -30,7 +32,10 @@ const LoginForm = () => {
     User.login(loginState)
       .then(({ data: token }) => {
         localStorage.setItem('token', token)
-        window.location = '/'
+        console.log(location.state)
+        const { from } = location.state || { from: { pathname: '/' } }
+        history.push('/')
+        // props.updateMe()
       })
   }
   const classes = useStyles()

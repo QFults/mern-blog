@@ -45,7 +45,7 @@ function a11yProps(index) {
   }
 }
 
-const Login = () => {
+const Login = props => {
   const [registerState, setRegisterState] = useState({
     name: '',
     email: '',
@@ -88,7 +88,7 @@ const Login = () => {
             </Tabs>
           </AppBar>
           <TabPanel value={index} index={0}>
-            <LoginForm />
+            <LoginForm updateMe={props.updateMe} />
           </TabPanel>
           <TabPanel value={index} index={1}>
             <RegisterForm
