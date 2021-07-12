@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom'
 import Login from './pages/Login'
 import Home from './pages/Home'
+import Profile from './pages/Profile'
 import Navbar from './components/Navbar'
 import User from './utils/UserAPI'
 
@@ -80,7 +81,7 @@ const App = () => {
             <Home />
           </PrivateRoute>
           <PrivateRoute path='/profile/:username'>
-            <h1>The Profile Page</h1>
+            <Profile />
           </PrivateRoute>
           <Route path='/login'>
             <Login updateMe={updateMe} />

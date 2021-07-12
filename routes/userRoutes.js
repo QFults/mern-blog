@@ -24,7 +24,18 @@ router.get('/users/me', passport.authenticate('jwt'), (req, res) => {
 
 router.get('/users/:username', passport.authenticate('jwt'), (req, res) => {
   User.findOne({ username: req.params.username })
-    .populate('posts')
+    .populate({
+      path: 'posts',
+      model: 'Post',
+      populate: {
+        path: 'comments',
+        model: 'Comment',
+        populate: {
+          path: 'author',
+          model: 'User'
+        }
+      }
+    })
     .then(user => res.json(user))
     .catch(err => console.log(err))
 })
