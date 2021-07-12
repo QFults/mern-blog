@@ -11,6 +11,7 @@ import PostForm from '../../components/PostForm'
 import CommentForm from '../../components/CommentForm'
 import Post from '../../utils/PostAPI'
 import Comment from '../../utils/CommentAPI'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,7 +93,10 @@ const Home = () => {
                 {post.title}
               </Typography>
               <Typography variant='p'>
-                Created by {post.author.username}
+                {'Created by '}
+                <Link to={`/profile/${post.author.username}`}>
+                  {post.author.username}
+                </Link>
               </Typography>
               <hr />
               <Typography variant='h6'>

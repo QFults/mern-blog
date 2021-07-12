@@ -36,9 +36,18 @@ const Navbar = props => {
           <Link className={classes.link} to={`/profile/${props.me.username}`}>
             <Button color='inherit'>Profile</Button>
           </Link>
-          <Link className={classes.link} to='/login'>
-            <Button color='inherit'>{props.isLoggedIn ? 'Logout' : 'Login'}</Button>
-          </Link>
+          {
+            !props.isLoggedIn
+              ? (
+                <Link className={classes.link} to='/login'>
+                  <Button color='inherit'>Login</Button>
+                </Link>
+                )
+              : (
+                <Button color='inherit' onClick={props.handleLogOut}>Logout</Button>
+                )
+          }
+
         </Toolbar>
       </AppBar>
     </div>

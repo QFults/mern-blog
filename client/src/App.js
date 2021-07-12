@@ -34,6 +34,12 @@ const App = () => {
       })
   }
 
+  const handleLogOut = () => {
+    localStorage.removeItem('token')
+    setMeState({ me: {}, isLoggedIn: false })
+    window.location = '/login'
+  }
+
   useEffect(() => {
     getMe()
   }, [])
@@ -75,6 +81,7 @@ const App = () => {
         <Navbar
           me={meState.me}
           isLoggedIn={meState.isLoggedIn}
+          handleLogOut={handleLogOut}
         />
         <Switch>
           <PrivateRoute exact path='/'>
