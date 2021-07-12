@@ -16,8 +16,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const LoginForm = props => {
-  const history = useHistory()
-  const location = useLocation()
   const [loginState, setLoginState] = useState({
     username: '',
     password: ''
@@ -32,10 +30,7 @@ const LoginForm = props => {
     User.login(loginState)
       .then(({ data: token }) => {
         localStorage.setItem('token', token)
-        console.log(location.state)
-        const { from } = location.state || { from: { pathname: '/' } }
-        history.push('/')
-        // props.updateMe()
+        window.location = '/'
       })
   }
   const classes = useStyles()
