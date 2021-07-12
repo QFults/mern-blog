@@ -7,6 +7,7 @@ import {
   useHistory
 } from 'react-router-dom'
 import Login from './pages/Login'
+import Home from './pages/Home'
 import Navbar from './components/Navbar'
 import User from './utils/UserAPI'
 
@@ -41,7 +42,6 @@ const App = () => {
       .then(({ data: me }) => {
         console.log(me)
         setMeState({ me, isLoggedIn: true })
-        // history.push('/')
       })
       .catch(err => {
         console.error(err)
@@ -77,7 +77,7 @@ const App = () => {
         />
         <Switch>
           <PrivateRoute exact path='/'>
-            <h1>The Home Page</h1>
+            <Home />
           </PrivateRoute>
           <PrivateRoute path='/profile/:username'>
             <h1>The Profile Page</h1>
